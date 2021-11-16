@@ -3,14 +3,16 @@ FROM quay.io/redhattraining/httpd-parent
 
 EXPOSE 8080
 
-LABEL io.openshift.expose-services="8080:http"
-	io.k8s.description="A basic apache HTTP Server child image, uses ONBUILD"
-	io.k8s.display-name="Apache HHTP Server"
+LABEL 	io.k8s.description="A basic apache HTTP Server child image, uses ONBUILD"
+	io.k8s.display-name="Apache HTTP Server"
+	io.openshift.expose-services="8080:http"
 	io.openshift.tag="apache, httpd"
 
-RUN sed -i "s/Listen 80/Listen 8080/g" /etc/httpd/conf/httpd.conf && \
-    sed -i "s/#ServerName www.example.com:80/Servername 0.0.0.0:80880/g" /etc/httpd/conf/httpd.conf &&\
-    run chgroup -R 0 /var/log/httpd /var/hun/httpd && \
+RUN sed -i "s/Listen 80/Listen 8080/g" /etc/httpd/conf/httpd.conf 
+
+RUN sed -i "s/#ServerName www.example.com:80/Servername 0.0.0.0:80880/g" /etc/httpd/conf/httpd.conf 
+    
+RUN chgroup -R 0 /var/log/httpd /var/hun/httpd && \
     chmod -R g=u /var/log/httpd /var/run/httpd
 
 USER 1001
